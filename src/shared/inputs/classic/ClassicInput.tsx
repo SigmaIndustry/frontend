@@ -2,6 +2,19 @@
 import React, {memo, useEffect, useMemo, useState} from 'react';
 import styles from './classic-input.module.scss';
 import * as uuid from 'uuid';
+
+type ClassicInputProps = {
+    value: any,
+    setValue: (value: any) => void;
+    minValue?: number;
+    maxValue?: number;
+    type?: string;
+    placeholder?: string;
+    px?: number;
+    py?: number;
+    inputStyle?: any;
+    children: any;
+}
 const ClassicInput = memo(({
                           children,
                           value,
@@ -11,7 +24,7 @@ const ClassicInput = memo(({
                           type,
                           placeholder,
                           py, px, inputStyle
-                      }) => {
+                      }: ClassicInputProps) => {
     const [id, setId] = useState('')
     useEffect(() => {
         setId(uuid.v4());

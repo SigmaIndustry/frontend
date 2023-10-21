@@ -1,8 +1,9 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from 'next';
+import { Gantari } from 'next/font/google';
+import '../styles/globals.css';
+import LayoutContainer from "../processes/layoutContainer/LayoutContainer";
 
-const inter = Inter({ subsets: ['latin'] })
+const gantari = Gantari({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,8 +16,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={gantari.className} style={{marginRight: '0px !important'}}>
+        <LayoutContainer>
+          {children}
+        </LayoutContainer>
+      </body>
     </html>
   )
 }

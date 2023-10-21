@@ -1,10 +1,16 @@
 import React, {useMemo} from 'react';
 import styles from './classic-button.module.scss';
+
+type ClassicButtonProps = {
+    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    variant?: string;
+    children: any;
+}
 const ClassicButton = ({
                            children,
                            onClick,
                            variant
-                       }) => {
+                       }: ClassicButtonProps) => {
     const variantClassName = useMemo(() => {
         let className = '';
         switch (variant) {

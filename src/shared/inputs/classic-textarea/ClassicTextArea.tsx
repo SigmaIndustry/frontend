@@ -2,7 +2,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import styles from './classic-textarea.module.scss';
 import {TextArea} from "@radix-ui/themes";
-import * as uuid from 'uuid';
 
 const ClassicTextArea = ({
                              children,

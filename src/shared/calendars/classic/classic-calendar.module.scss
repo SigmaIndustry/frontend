@@ -7,7 +7,6 @@
     padding: 5px;
     position: absolute;
     z-index: 1;
-    bottom: -360px;
     height: 350px;
     :global {
         .react-calendar__tile {
@@ -56,6 +55,14 @@
             background: #314856;
         }
     }
+}
+
+.pos__bottom {
+    bottom: -360px;
+}
+
+.pos__top {
+    bottom: 50px;
 }
 
 .calendar__wrapper {
