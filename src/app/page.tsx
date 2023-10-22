@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import ProfileButton from "./components/auth/ProfileButton";
+import ProfileButton from "./home/auth/ProfileButton";
 
 export default function Home() {
     return (

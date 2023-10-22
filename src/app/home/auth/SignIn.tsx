@@ -3,6 +3,7 @@ import styles from './styles/auth-form.module.scss';
 import {ClassicInput} from "@shared/inputs/api";
 import {ClassicButton} from "@shared/buttons/api";
 import {AuthUser} from "./AuthSection";
+import {AuthController} from "../../../lib/controllers/auth.controller";
 
 type SignInProps = {
     onHavingAccount: () => void;
@@ -13,11 +14,16 @@ type SignInForm = {
 }
 const SignIn = ({onHavingAccount}: SignInProps) => {
     const [form, setForm] = useState<SignInForm>({
-        email: '',
-        password: ''
+        email: 'chad@nure.ua',
+        password: 'hello.world_123'
     });
     const signIn = async () => {
+        if (!form.email || !form.password) {
+            return;
+        }
+        const res = await AuthController.signIn(form);
 
+        console.log(res);
     }
 
     return (
