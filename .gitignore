@@ -35,3 +35,4 @@ ssh_key.pub
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env
