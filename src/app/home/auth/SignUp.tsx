@@ -7,7 +7,7 @@ import {AuthUser} from "./AuthSection";
 import {ClassicCalendar} from "@shared/calendars/api";
 import {RadioGroup} from "@shared/selects/api";
 import genders from "@assets/data/genders";
-import {AuthController} from "../../../lib/controllers/auth.controller";
+import {AuthController} from "../../../lib/controllers/auth/auth.controller";
 
 type SignUpProps = {
     onHavingAccount: () => void;

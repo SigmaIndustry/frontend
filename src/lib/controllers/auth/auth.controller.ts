@@ -1,4 +1,4 @@
-import $api, {API_URL} from "../http";
+import $api, {API_URL} from "../../http";
 import SignInDto from "./dto/sign-in.dto";
 import axios, {AxiosError} from "axios";
 import SignUpDto from "./dto/sign-up.dto";

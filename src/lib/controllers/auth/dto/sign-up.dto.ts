@@ -1,4 +1,4 @@
-import {AuthUser} from "../../../app/home/auth/AuthSection";
+import {AuthUser} from "../../../../app/home/auth/AuthSection";
 
 type SignUpDto = {
     first_name: string,

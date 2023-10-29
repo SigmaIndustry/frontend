@@ -3,7 +3,7 @@ import styles from './styles/auth-form.module.scss';
 import {ClassicInput} from "@shared/inputs/api";
 import {ClassicButton} from "@shared/buttons/api";
 import {AuthUser} from "./AuthSection";
-import {AuthController} from "../../../lib/controllers/auth.controller";
+import {AuthController} from "../../../lib/controllers/auth/auth.controller";
 
 type SignInProps = {
     onHavingAccount: () => void;
