@@ -1,5 +1,5 @@
 type SearchDto = {
-    querry:string
+    query:string
 }
 
 export default SearchDto;
