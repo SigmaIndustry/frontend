@@ -1,7 +1,31 @@
 .serviceCard {
+  position: relative; /* Make the container relatively positioned */
+  display: flex;
   border: 1px solid #ccc;
   margin: 10px;
   padding: 10px;
+  height:200px;
+  width: 100%;
+}
+
+.serviceCardImages {
+  display: flex;
+  align-items: center;
+  width: 225px;
+  margin-right: 10px; /* Add space between image and details */
+  min-width: 20px;
+}
+
+.serviceCardImages img {
+  width: 100%;
+}
+
+.serviceCardDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
 .serviceCardHeader {
@@ -10,11 +34,8 @@
   padding-bottom: 10px;
 }
 
-.serviceCardImages img {
-  max-width: 100%;
-  margin-bottom: 10px;
-}
-
-.serviceCardDetails p {
-  margin-bottom: 5px;
+.serviceCardRating {
+  position: absolute;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
 }

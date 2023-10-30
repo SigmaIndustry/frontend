@@ -4,7 +4,7 @@ import Search from './home/search/Search';
 
 export default function Home() {
     return (
-    <section>
+    <section style={{width:"100%"}}>
         ...content
         <ProfileButton/>
         <Search/>

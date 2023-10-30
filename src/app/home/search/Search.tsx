@@ -1,7 +1,7 @@
 "use client"
 import { ClassicInput } from '@shared/inputs/api';
 import { SearchController } from 'lib/controllers/search/search.controller';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ServiceCard from './ServiceCard';
 
 type SearchForm = {
@@ -23,7 +23,38 @@ const SearchComponent = () => {
     query: ""
   })
 
+  
   const [services, setServices] = useState<ServiceDto[]>([]);
+  
+  useEffect(() => {
+    const searchFunc = async () => {
+      console.log(new Date().toISOString());
+      try {
+        const res = await SearchController.search({
+          query: form.query
+        }) as unknown as any;
+
+        console.log(res);
+
+        const results = res.data.results.map((result: any) => ({
+          name: result.name,
+          pictures: result.pictures,
+          description: result.description,
+          price: result.price,
+          category: result.category,
+          rating: result.rating,
+          provider: result.provider
+        }));
+
+        setServices(results);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    searchFunc(); 
+
+  }, [form.query]); 
 
   const searchFunc = async () => {
     console.log(new Date().toISOString())
@@ -31,6 +62,8 @@ const SearchComponent = () => {
       const res = await SearchController.search({
         query: form.query
       }) as unknown as any;
+
+      console.log(res)
 
       const results = res.data.results.map((result: any) => ({
         name: result.name,
@@ -51,11 +84,12 @@ const SearchComponent = () => {
 
   return (
     <>
+    <div style={{margin:"15px 0 0 0;"}}></div>
       <ClassicInput
         value={form.query}
         setValue={(value) => setForm({ ...form, query: value })}
       >
-        Query
+        Search
       </ClassicInput>
       <button onClick={searchFunc}>Search</button>
 
@@ -64,7 +98,7 @@ const SearchComponent = () => {
           <ServiceCard key={index} service={service} />
         ))
       ) : (
-        <p>No results found.</p>
+        <p>No results.</p>
       )}
     </>
   );
