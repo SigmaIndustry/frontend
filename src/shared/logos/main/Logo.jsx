@@ -5,8 +5,8 @@ import Link from "next/link";
 const Logo = () => {
     return (
         <div className={styles.logo}>
-            <Link href={'/home'}>
-                <span className={styles.logo_text}><span>S</span>UL</span>
+            <Link href={'/'}>
+                <span className={styles.logo_text}>Sigma</span>
             </Link>
         </div>
     );

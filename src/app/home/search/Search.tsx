@@ -3,6 +3,7 @@ import { ClassicInput } from '@shared/inputs/api';
 import { SearchController } from 'lib/controllers/search/search.controller';
 import React, {useEffect, useState} from 'react';
 import ServiceCard from './ServiceCard';
+import {ClassicButton} from "@shared/buttons/api";
 
 type SearchForm = {
   query: string;
@@ -84,14 +85,20 @@ const SearchComponent = () => {
 
   return (
     <>
-    <div style={{margin:"15px 0 0 0;"}}></div>
-      <ClassicInput
-        value={form.query}
-        setValue={(value) => setForm({ ...form, query: value })}
-      >
-        Search
-      </ClassicInput>
-      <button onClick={searchFunc}>Search</button>
+    <div style={{margin:"15px 0 0 0;", background: 'inherit'}}></div>
+      <div className={'flex mt-10 gap-4 mb-10'}>
+        <div className={'w-full'}>
+          <ClassicInput
+            value={form.query}
+            setValue={(value) => setForm({ ...form, query: value })}
+          >
+            Search
+          </ClassicInput>
+        </div>
+        <div className={'h-[55px]'}>
+          <ClassicButton onClick={searchFunc}>Search</ClassicButton>
+        </div>
+      </div>
 
       {services.length > 0 ? (
         services.map((service, index) => (

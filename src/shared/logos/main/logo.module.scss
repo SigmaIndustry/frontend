@@ -12,12 +12,16 @@
 .logo_text {
     font-size: 75px;
     font-family: "Inconsolata Expanded Black", serif;
-    letter-spacing: -5px;
     position: relative;
+    line-height: 100%;
     background: inherit;
     @include flexCenter();
     justify-content: left;
-    &::before {
+    transition: all 0.2s;
+    &:hover {
+        color: #bfe1e2;
+    }
+    /*&::before {
         content: '';
         background: inherit;
         width: 50px;
@@ -38,5 +42,5 @@
     }
     span {
         margin-right: 30px;
-    }
+    }*/
 }
