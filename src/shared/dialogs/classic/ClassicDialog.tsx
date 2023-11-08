@@ -15,7 +15,6 @@ const ClassicDialog = ({onClick, children}: {
             document.body.style.overflowY = 'scroll';
         }
     }, []);
-    console.log(document);
 
     return (
         createPortal(

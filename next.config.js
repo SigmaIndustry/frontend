@@ -8,6 +8,12 @@ const nextConfig = {
                 port: '',
                 pathname: '/WGNHxjJ/ryan-gosling-barbie-642c02bd77619.jpg',
             },
+            {
+                protocol: 'https',
+                hostname: 'i.ibb.co',
+                port: '',
+                pathname: '/**/*',
+            },
         ],
     },
 }

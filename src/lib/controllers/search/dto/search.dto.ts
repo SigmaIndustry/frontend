@@ -1,5 +1,6 @@
 type SearchDto = {
-    query:string
+    query: string;
+    id?: number;
 }
 
 export default SearchDto;
