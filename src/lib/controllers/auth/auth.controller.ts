@@ -39,5 +39,27 @@ export class AuthController {
             }
         }
     }
+    static async logout() {
+        window.localStorage.removeItem('token');
+    }
 
+    static async verify(token: string) {
+        try {
+            const signInResponse = await $api.post('security/authenticate', {
+                token
+            });
+            if (signInResponse.data.error) {
+                return {
+                    error: signInResponse.data.error
+                };
+            } else {
+                return signInResponse.data;
+            }
+        } catch (e: any) {
+            console.log(e);
+            return {
+                error: e?.response?.data?.error ?? 'Internal server error. Try again!',
+            }
+        }
+    }
 }

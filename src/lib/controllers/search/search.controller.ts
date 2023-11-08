@@ -8,7 +8,7 @@ export class SearchController{
     static async search({query}:SearchDto){
         try{
             const response = await $api.post('api/service/search',{query})
-            return response
+            return response;
         } catch (e){
             console.log(e)
             if (axios.isAxiosError(e)) {

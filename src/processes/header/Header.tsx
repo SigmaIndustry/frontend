@@ -4,8 +4,12 @@ import Logo from "@shared/logos/main/Logo";
 import Link from "next/link";
 import Menu from "./menu/Menu";
 import ProfileButton from "./menu/ProfileButton";
+import {selectUsername} from "../../lib/store/selectors/user.selectors";
+import {useSelector} from "react-redux";
 
 const Header = () => {
+    const username = useSelector(selectUsername);
+
     return (
         <header className={styles.header}>
             <div className={styles.header__logo}>
@@ -15,7 +19,7 @@ const Header = () => {
                 <li className={styles.header__navbar_item}><Link href={'/'}>Home</Link></li>
             </nav>
             <div className={styles.header__profile_wrapper}>
-                <ProfileButton/>
+                <Menu username={username}/>
             </div>
         </header>
     );

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Gantari } from 'next/font/google';
 import '../styles/globals.css';
 import LayoutContainer from "../processes/layoutContainer/LayoutContainer";
+import WithStoreProvider from "../processes/store-provider/WithStoreProvider";
 
 const gantari = Gantari({ subsets: ['latin'] })
 
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={gantari.className} style={{marginRight: '0px !important'}}>
+      <WithStoreProvider>
         <LayoutContainer>
-          {children}
+            {children}
         </LayoutContainer>
+      </WithStoreProvider>
       </body>
     </html>
   )

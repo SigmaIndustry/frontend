@@ -5,7 +5,10 @@ import {createPortal} from "react-dom";
 import styles from './classic-dialog.module.scss';
 import MainTheme from "../../../processes/theme/MainTheme";
 
-const ClassicDialog = ({onClick, children}) => {
+const ClassicDialog = ({onClick, children}: {
+    onClick?: () => void,
+    children: any
+}) => {
     useEffect(() => {
         document.body.style.overflowY = 'hidden';
         return () => {

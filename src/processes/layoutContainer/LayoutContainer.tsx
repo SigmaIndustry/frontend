@@ -5,8 +5,12 @@ import '@radix-ui/themes/styles.css';
 import Header from "../header/Header";
 import MainTheme from "../theme/MainTheme";
 import Footer from "../footer/Footer";
+import {usePathname} from "next/navigation";
 
 const LayoutContainer = ({children}: {children: any}) => {
+
+    const pathname = usePathname();
+    const isHeaderAndFooterHidden = pathname.includes('login');
 
     useEffect(() => {
         function checkVerticalScrollBarVisibility() {
@@ -31,7 +35,7 @@ const LayoutContainer = ({children}: {children: any}) => {
 
     return (
         <>
-            <Header/>
+            {!isHeaderAndFooterHidden && <Header/>}
             <main className={styles.layoutContainer}>
                 <div className={styles.layoutContainer__inner}>
                     <MainTheme>
@@ -39,7 +43,7 @@ const LayoutContainer = ({children}: {children: any}) => {
                     </MainTheme>
                 </div>
             </main>
-            <Footer/>
+            {!isHeaderAndFooterHidden && <Footer/>}
         </>
     );
 };

@@ -4,6 +4,7 @@ import { SearchController } from 'lib/controllers/search/search.controller';
 import React, {useEffect, useState} from 'react';
 import ServiceCard from './ServiceCard';
 import {ClassicButton} from "@shared/buttons/api";
+import {any} from "prop-types";
 
 type SearchForm = {
   query: string;
@@ -31,9 +32,9 @@ const SearchComponent = () => {
     const searchFunc = async () => {
       console.log(new Date().toISOString());
       try {
-        const res = await SearchController.search({
+        const res: any = await SearchController.search({
           query: form.query
-        }) as unknown as any;
+        });
 
         console.log(res);
 
@@ -46,7 +47,7 @@ const SearchComponent = () => {
           rating: result.rating,
           provider: result.provider
         }));
-
+        console.log(results);
         setServices(results);
       } catch (e) {
         console.log(e);
@@ -85,9 +86,8 @@ const SearchComponent = () => {
 
   return (
     <>
-    <div style={{margin:"15px 0 0 0;", background: 'inherit'}}></div>
-      <div className={'flex mt-10 gap-4 mb-10'}>
-        <div className={'w-full'}>
+      <div className={'flex mt-10 gap-4 mb-10 bg-inherit'}>
+        <div className={'w-full bg-inherit'}>
           <ClassicInput
             value={form.query}
             setValue={(value) => setForm({ ...form, query: value })}
