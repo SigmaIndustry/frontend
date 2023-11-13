@@ -7,6 +7,8 @@ import {ClassicButton} from "@shared/buttons/api";
 import {SearchController} from "../../../lib/controllers/search/search.controller";
 import {useRouter} from "next/navigation";
 import RateModal from "../RateModal";
+import OrderModal from "../OrderModal";
+import { CategoryController } from 'lib/controllers/category/category.controller';
 
 const Page = ({params: {id}}: {params: {id: number}}) => {
     function formatPhoneNumber(phone: string): string {
@@ -14,7 +16,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
         const formattedNumber = cleanedNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{4})/, '+$1 $2 $3 $4');
         return formattedNumber;
     }
-    
+
     const [service, setService] = useState<Service>({
         id,
         name: '',
@@ -27,6 +29,8 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
     });
     const router = useRouter();
     const [rateModal, setRateModal] = useState(false);
+    const [orderModal, setOrderModal] = useState(false);
+    const [categories, setCategories] = useState({});
     useEffect(() => {
         SearchController.search({query: '', id})
             .then((res: any) => {
@@ -37,6 +41,9 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     setService(res.data.results[0]);
                 }
             })
+        CategoryController.getCategories({}).then((res:any)=>{
+            setCategories(res.data);
+        })
     }, []);
 
     const rate = async () => {
@@ -63,7 +70,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                         }
                     </div>
                     <div>
-                        <p className={styles.service__email}>Category - {service.category}</p>
+                        <p className={styles.service__email}>Category - {categories[service.category]}</p>
                     </div>
                     <div className={styles.service__options}>
                         <ClassicButton onClick={rate}>Rate</ClassicButton>
@@ -85,7 +92,8 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     <p className={styles.service__info_description}>{service.description}</p>
                 </div>
             </div>
-            <RateModal open={rateModal} setOpen={setRateModal} serviceId={service.id}/>
+            <RateModal open={orderModal} setOpen={setRateModal} serviceId={service.id}/>
+            <OrderModal open={rateModal} setOpen={setOrderModal} serviceId={service.id}/>
         </section>
     );
 };
