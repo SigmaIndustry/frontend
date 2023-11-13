@@ -3,12 +3,15 @@ import React, {useEffect, useState} from 'react';
 import styles from '../styles/service.module.scss';
 import Image from "next/image";
 import {Service} from "../../../lib/entities/Service";
+import {Provider} from "../../../lib/entities/Provider";
 import {ClassicButton} from "@shared/buttons/api";
 import {SearchController} from "../../../lib/controllers/search/search.controller";
 import {useRouter} from "next/navigation";
 import RateModal from "../RateModal";
 import OrderModal from "../OrderModal";
 import { CategoryController } from 'lib/controllers/category/category.controller';
+import { ProviderController } from 'lib/controllers/provider/provider.controller';
+import ProviderDto from 'lib/controllers/provider/dto/provider.dto';
 
 const Page = ({params: {id}}: {params: {id: number}}) => {
     function formatPhoneNumber(phone: string): string {
@@ -27,12 +30,23 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
         rating: 0,
         category: ''
     });
+    
+    const [provider,setProvider] = useState<Provider>({
+        business_name: "",
+        description: "",
+        phone_number: "",
+        city:"",
+        work_time: "",
+        created_at: ""
+    });
+
     const router = useRouter();
     const [rateModal, setRateModal] = useState(false);
     const [orderModal, setOrderModal] = useState(false);
     const [categories, setCategories] = useState({});
     useEffect(() => {
-        SearchController.search({query: '', id})
+        const fetchData = async () =>{
+        await SearchController.search({query: '', id})
             .then((res: any) => {
                 console.log(res);
                 if (res.error) {
@@ -41,15 +55,20 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     setService(res.data.results[0]);
                 }
             })
-        CategoryController.getCategories({}).then((res:any)=>{
+        await CategoryController.getCategories({}).then((res:any)=>{
             setCategories(res.data);
         })
+        await ProviderController.get_provider({provider_id: id} as any).then((res:any)=>{
+            setProvider(res.data)})
+    }
+    fetchData()
     }, []);
 
     const rate = async () => {
         setRateModal(true)
     }
     return (
+
         <section className={styles.service}>
             <div className={styles.service__inner}>
                 <div className={styles.service__left_block}>

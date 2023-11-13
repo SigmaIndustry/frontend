@@ -1,5 +1,5 @@
 type ProviderDto = {
-    id: number;
+    provider_id: number;
 }
 
 export default ProviderDto;
