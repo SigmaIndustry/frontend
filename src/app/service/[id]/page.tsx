@@ -9,6 +9,12 @@ import {useRouter} from "next/navigation";
 import RateModal from "../RateModal";
 
 const Page = ({params: {id}}: {params: {id: number}}) => {
+    function formatPhoneNumber(phone: string): string {
+        const cleanedNumber = phone.replace(/\D/g, '');
+        const formattedNumber = cleanedNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{4})/, '+$1 $2 $3 $4');
+        return formattedNumber;
+    }
+    
     const [service, setService] = useState<Service>({
         id,
         name: '',

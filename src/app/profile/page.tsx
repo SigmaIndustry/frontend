@@ -8,6 +8,12 @@ import EditProfile from "./edit/EditProfile";
 import Image from "next/image";
 
 const Page = () => {
+    function formatPhoneNumber(phone: string): string {
+        const cleanedNumber = phone.replace(/\D/g, '');
+        const formattedNumber = cleanedNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{4})/, '+$1 $2 $3 $4');
+        return formattedNumber;
+    }
+
     const [user, setUser] = useState<User>({
         email: '',
         last_name: '',
@@ -84,7 +90,7 @@ const Page = () => {
                             <div className={styles.profile__info_blocks_wrapper}>
                                 <div className={styles.profile__info_block}>
                                     <p className={styles.profile__info_item}><span>Business:</span> {provider.business_name}</p>
-                                    <p className={styles.profile__info_item}><span>Phone:</span> {provider.phone_number}</p>
+                                    <p className={styles.profile__info_item}><span>Phone:</span> {formatPhoneNumber("+380"+ provider.phone_number)}</p>
                                 </div>
                                 <div className={styles.profile__info_block}>
                                     <p className={styles.profile__info_item}><span>City:</span> {provider.city}</p>
