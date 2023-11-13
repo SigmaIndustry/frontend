@@ -101,10 +101,12 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                         <div className={styles.service__info_block}>
                             <p className={styles.service__info_item}><span>Name:</span> {service.name}</p>
                             <p className={styles.service__info_item}><span>Price:</span> {service.price ?? 'Free'}</p>
+                            <p className={styles.service__info_item}><span>Phone number:</span> {formatPhoneNumber("+380"+ provider.phone_number)}</p>
                         </div>
                         <div className={styles.service__info_block}>
                             <p className={styles.service__info_item}><span>Provider:</span> {service.provider}</p>
                             <p className={styles.service__info_item}><span>Rating:</span> {service.rating}</p>
+                            <p className={styles.service__info_item}><span>Work time:</span> {provider.work_time}</p>
                         </div>
                     </div>
                     <p className={styles.service__info_description_title}>Description</p>
