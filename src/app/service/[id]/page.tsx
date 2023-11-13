@@ -11,7 +11,10 @@ import RateModal from "../RateModal";
 import OrderModal from "../OrderModal";
 import { CategoryController } from 'lib/controllers/category/category.controller';
 import { ProviderController } from 'lib/controllers/provider/provider.controller';
-import ProviderDto from 'lib/controllers/provider/dto/provider.dto';
+
+type Category = {
+    category : string;
+}
 
 const Page = ({params: {id}}: {params: {id: number}}) => {
     function formatPhoneNumber(phone: string): string {
@@ -43,6 +46,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
     const router = useRouter();
     const [rateModal, setRateModal] = useState(false);
     const [orderModal, setOrderModal] = useState(false);
+
     const [categories, setCategories] = useState({});
     useEffect(() => {
         const fetchData = async () =>{
@@ -55,10 +59,10 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     setService(res.data.results[0]);
                 }
             })
-        await CategoryController.getCategories({}).then((res:any)=>{
+        await CategoryController.getCategories({}).then((res: any)=>{
             setCategories(res.data);
         })
-        await ProviderController.get_provider({provider_id: id} as any).then((res:any)=>{
+        await ProviderController.getProvider({provider_id: id} as any).then((res:any)=>{
             setProvider(res.data)})
     }
     fetchData()
@@ -66,6 +70,9 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
 
     const rate = async () => {
         setRateModal(true)
+    }
+    const order = async () => {
+        setOrderModal(true)
     }
     return (
 
@@ -92,7 +99,8 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                         <p className={styles.service__email}>Category - {categories[service.category]}</p>
                     </div>
                     <div className={styles.service__options}>
-                        <ClassicButton onClick={rate}>Rate</ClassicButton>
+                    <ClassicButton onClick={order}>Order</ClassicButton>
+                    <ClassicButton onClick={rate}>Rate</ClassicButton>
                     </div>
                 </div>
                 <div className={styles.service__right_block}>
@@ -104,7 +112,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                             <p className={styles.service__info_item}><span>Phone number:</span> {formatPhoneNumber("+380"+ provider.phone_number)}</p>
                         </div>
                         <div className={styles.service__info_block}>
-                            <p className={styles.service__info_item}><span>Provider:</span> {service.provider}</p>
+                            <p className={styles.service__info_item}><span>Provider:</span> {provider.business_name}</p>
                             <p className={styles.service__info_item}><span>Rating:</span> {service.rating}</p>
                             <p className={styles.service__info_item}><span>Work time:</span> {provider.work_time}</p>
                         </div>
@@ -113,8 +121,8 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     <p className={styles.service__info_description}>{service.description}</p>
                 </div>
             </div>
-            <RateModal open={orderModal} setOpen={setRateModal} serviceId={service.id}/>
-            <OrderModal open={rateModal} setOpen={setOrderModal} serviceId={service.id}/>
+            <RateModal open={rateModal} setOpen={setRateModal} serviceId={service.id}/>
+            <OrderModal open={orderModal} setOpen={setOrderModal} service_id={id}/>
         </section>
     );
 };

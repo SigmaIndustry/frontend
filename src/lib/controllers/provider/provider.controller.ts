@@ -5,7 +5,7 @@ import ProviderDto from "./dto/provider.dto";
 
 
 export class ProviderController{
-    static async get_provider({provider_id}:ProviderDto){
+    static async getProvider({provider_id}:ProviderDto){
         try{
             const response = await $api.post('security/get_provider',{provider_id})
             return response;

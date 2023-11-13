@@ -4,27 +4,55 @@ import {ClassicDialog} from "@shared/dialogs/api";
 import styles from './styles/rate.module.scss';
 import {ClassicInput, ClassicTextArea} from "@shared/inputs/api";
 import ClassicButton from "@shared/buttons/classic/ClassicButton";
+import { ServiceController } from 'lib/controllers/service/service.controller';
 
-const OrderModal = ({open, setOpen, serviceId}: {
+type OrderForm = {
+    phoneNumber:string;
+}
+
+const OrderModal = ({open, setOpen, service_id}: {
     open: boolean,
     setOpen: (bool: boolean) => void,
-    serviceId: number
+    service_id: number
 }) => {
+    const [orderForm, setOrderForm] = useState<OrderForm>({
+        phoneNumber:""
+    })
+    const [message, setMessage] = useState('');
     const apply = async (e: FormEvent) => {
         const token = window.localStorage.getItem('token');
         if (!token) {
             return;
         }
+        const finalMessage = message + ` | Phone number: ${orderForm.phoneNumber}`
+        ServiceController.order({service_id, token, message:finalMessage})
+        .then(res => {
+            console.log(res);
+        })
+        .finally(() => {
+            setOpen(false);
+        })
+    ;
+    e.preventDefault();
     }
 
-    const [orderMsg, setOrderMsg] = useState('');
     return (
         open && <ClassicDialog>
             <div className={styles.section__content}>
                 <h1 className={styles.section__content__title}>Order</h1>
                 <form className={styles.form}>
                     <div className={'my-10 w-full flex flex-col items-center gap-4'}>
-                        <ClassicTextArea minHeight={200} value={orderMsg} setValue={setOrderMsg}>
+                        <div style={{width:"100%", background: '#0B1617'}}>                   
+                            <div className={'w-full bg-inherit'}>
+                                <ClassicInput
+                                    value={orderForm.phoneNumber}
+                                    setValue={(value) => setOrderForm({ ...orderForm, phoneNumber: value })}
+                                >
+                                    Phone number
+                                </ClassicInput>
+                            </div>
+                        </div>
+                        <ClassicTextArea minHeight={200} value={message} setValue={setMessage}>
                             Order
                         </ClassicTextArea>
                     </div>
