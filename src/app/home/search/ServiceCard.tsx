@@ -8,7 +8,6 @@ import {Service} from "../../../lib/entities/Service";
 
 const ServiceCard = ({service}: {service: Service}) => {
     const router = useRouter();
-    console.log(service)
     return (
         <div className={styles.serviceCard} onClick={() => router.push(`/service/${service.id}`)}>
             <div className={styles.serviceCardImages}>
@@ -28,7 +27,7 @@ const ServiceCard = ({service}: {service: Service}) => {
                     </div>
                     <div className={styles.serviceCardHeader}>
                         <h2>{service.name}</h2>
-                        <p>Price: {service.price}</p>
+                        <p>Price: {service.price ?? 'Negotiable'}</p>
                     </div>
                 </div>
                 <p className={styles.serviceCardDescription} data-full-description={service.description}>

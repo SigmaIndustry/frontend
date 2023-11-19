@@ -4,6 +4,7 @@ import {ClassicInput} from "@shared/inputs/api";
 import {ClassicButton} from "@shared/buttons/api";
 import {AuthUser} from "./AuthSection";
 import {AuthController} from "../../../lib/controllers/auth/auth.controller";
+import {useRouter} from "next/navigation";
 
 type SignInProps = {
     onHavingAccount: () => void;
@@ -13,23 +14,31 @@ type SignInForm = {
     password: string;
 }
 const SignIn = ({onHavingAccount}: SignInProps) => {
+    const router = useRouter();
     const [form, setForm] = useState<SignInForm>({
         email: 'chad@nure.ua',
         password: 'hello.world_123'
     });
+    const [error, setError] = useState('');
     const signIn = async () => {
         if (!form.email || !form.password) {
             return;
         }
         const res = await AuthController.signIn(form);
-
+        if (res.token) {
+            window.localStorage.setItem('token', res.token);
+            router.push('/');
+        }
+        else if (res.error) {
+            setError(res.error);
+        }
         console.log(res);
     }
 
     return (
         <div className={styles.form}>
             <div className={styles.form__inner}>
-                <h2 className={styles.form__title}>Sign in as {AuthUser.CUSTOMER}</h2>
+                <h2 className={styles.form__title}>Sign in</h2>
                 <div className={styles.form__inputs}>
                     <ClassicInput
                         value={form.email}
@@ -39,13 +48,14 @@ const SignIn = ({onHavingAccount}: SignInProps) => {
                         value={form.password}
                         setValue={(value) => setForm({...form, password: value})}
                     >Password</ClassicInput>
+                    <p className={'text-red-500'}>{error}</p>
                 </div>
                 <div className={styles.form__btns}>
                     <ClassicButton onClick={signIn}>Continue</ClassicButton>
                     <button className={styles.form__btn}
                             onClick={onHavingAccount}
                     >
-                        I already have account
+                        I have no account
                     </button>
                 </div>
             </div>

@@ -56,10 +56,11 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                 if (res.error) {
                     router.push('/');
                 } else {
-                    setService(res.data.results[0]);
+                    console.log(res.data.results[0])
+                    setService(res.data.results.find(item => item.id === +id));
                 }
             })
-        await CategoryController.getCategories({}).then((res: any)=>{
+        await CategoryController.getCategories().then((res: any)=>{
             setCategories(res.data);
         })
         await ProviderController.getProvider({provider_id: id} as any).then((res:any)=>{
@@ -67,7 +68,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
     }
     fetchData()
     }, []);
-
+    console.log(service)
     const rate = async () => {
         setRateModal(true)
     }
@@ -108,7 +109,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     <div className={styles.service__info_blocks_wrapper}>
                         <div className={styles.service__info_block}>
                             <p className={styles.service__info_item}><span>Name:</span> {service.name}</p>
-                            <p className={styles.service__info_item}><span>Price:</span> {service.price ?? 'Free'}</p>
+                            <p className={styles.service__info_item}><span>Price:</span> {service.price ?? 'Negotiable'}</p>
                             <p className={styles.service__info_item}><span>Phone number:</span> {formatPhoneNumber("+380"+ provider.phone_number)}</p>
                         </div>
                         <div className={styles.service__info_block}>

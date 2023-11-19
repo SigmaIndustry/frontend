@@ -30,7 +30,7 @@ const OrderModal = ({open, setOpen, service_id}: {
             return;
         }
         const finalMessage = message + ` | Phone number: ${orderForm.phoneNumber}`
-        ServiceController.order({service_id , token, message:finalMessage})
+        ServiceController.order({service_id , token, message: finalMessage})
         .then((res: any) => {
             console.log(res)
            if (res.field || res.error) {

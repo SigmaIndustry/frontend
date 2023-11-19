@@ -7,16 +7,10 @@ import {ClassicButton} from "@shared/buttons/api";
 import {ProviderController} from "../../../lib/controllers/provider/provider.controller";
 import {AuthController} from "../../../lib/controllers/auth/auth.controller";
 
-const EditProfileDialog = ({first_name, last_name, cancel}: {
-    first_name: string,
-    last_name: string,
+const EditProfileDialog = ({cancel}: {
     cancel: () => void,
 }) => {
-    const [editUser, setEditUser] = useState<{
-        first_name?: string,
-        last_name?: string
-    }>({
-    })
+    const [newPassword, setNewPassword] = useState('');
 
     const apply = async () => {
         const token = window.localStorage.getItem('token');
@@ -25,26 +19,20 @@ const EditProfileDialog = ({first_name, last_name, cancel}: {
             await AuthController.verify(token).then((res) => {
                 user = res.user
             })
-            await ProviderController.update({...editUser, email: user.email, token})
+            await ProviderController.update({password: newPassword, email: user.email, token})
                 .then((res) => console.log(res));
         }
-        window.location.reload();
+        cancel();
     }
     return (
         <div className={styles.dialog}>
             <h1 className={styles.dialog__title}>Editing</h1>
             <div className={styles.dialog__block}>
                 <ClassicInput
-                    value={editUser.first_name}
-                    setValue={(first_name) => setEditUser({...editUser, first_name})}
+                    value={newPassword}
+                    setValue={setNewPassword}
                 >
-                    Name
-                </ClassicInput>
-                <ClassicInput
-                    value={editUser.last_name}
-                    setValue={(last_name) => setEditUser({...editUser, last_name})}
-                >
-                    Surname
+                    New Password
                 </ClassicInput>
             </div>
             <div className={styles.dialog__options}>

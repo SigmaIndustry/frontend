@@ -5,9 +5,13 @@ import axios from "axios";
 
 
 export class SearchController{
-    static async search({query}:SearchDto){
+    static async search(searchDto: SearchDto){
         try{
-            const response = await $api.post('api/service/search',{query})
+            const response = await $api.post('api/service/search',{
+                ...searchDto,
+                page_limit: 10,
+                page_offset: 0,
+            })
             return response;
         } catch (e){
             console.log(e)

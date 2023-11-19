@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ClassicDialog} from "@shared/dialogs/api";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -14,22 +14,17 @@ export enum AuthUser {
     SERVICE_PROVIDER = 'Service provider',
 }
 
-type AuthSectionProps = {
-    setOpen: (isOpen: boolean) => void
-}
-const AuthSection = ({setOpen}: AuthSectionProps) => {
-    const [authForm, setAuthForm] = useState(AuthFormTypes.SIGN_IN);
+const AuthSection = () => {
+    const [authForm, setAuthForm] = useState<any>(AuthFormTypes.SIGN_IN);
+
     return (
-        <ClassicDialog onClick={() => setOpen(false)}>
-            {authForm === AuthFormTypes.SIGN_IN
-                ? <SignIn
-                    onHavingAccount={() => setAuthForm(AuthFormTypes.SIGN_UP)}
-                />
-                : <SignUp
-                    onHavingAccount={() => setAuthForm(AuthFormTypes.SIGN_IN)}
-                />
-            }
-        </ClassicDialog>
+        authForm === AuthFormTypes.SIGN_IN
+            ? <SignIn
+                onHavingAccount={() => setAuthForm(AuthFormTypes.SIGN_UP)}
+            />
+            : <SignUp
+                onHavingAccount={() => setAuthForm(AuthFormTypes.SIGN_IN)}
+            />
     );
 };
 

@@ -9,7 +9,14 @@ const ClassicSelect = memo(({placeholder,
                            items,
                            setSelectedItem,
                                 triggerStyle
-                       }) => {
+                       }: {
+    placeholder?: string;
+    label: string;
+    defaultValue?: string;
+    items: any[];
+    setSelectedItem: Function;
+    triggerStyle?: any;
+}) => {
     return (
         <div className={styles.select}>
             <Select.Root defaultValue={defaultValue}
@@ -27,7 +34,7 @@ const ClassicSelect = memo(({placeholder,
                 >
                     <Select.Group>
                         <Select.Label>{label}</Select.Label>
-                        {items.length && items.map((item, ind) =>
+                        {items.length && items.map((item: any, ind: number) =>
                             <Select.Item key={ind}
                                          value={item.value ?? item}
                                          style={{cursor: 'pointer'}}

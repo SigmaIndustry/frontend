@@ -5,7 +5,7 @@ import CategoryDto from "./dto/category.dto";
 
 
 export class CategoryController{
-    static async getCategories({}:CategoryDto){
+    static async getCategories(){
         try{
             const response = await $api.get('api/enum/categories')
             return response;

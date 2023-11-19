@@ -14,6 +14,18 @@ const nextConfig = {
                 port: '',
                 pathname: '/**/*',
             },
+            {
+                protocol: 'https',
+                hostname: 'www.carwash-westland.nl',
+                port: '',
+                pathname: '/**/*',
+            },
+            {
+                protocol: 'https',
+                hostname: 'example.com',
+                port: '',
+                pathname: '/**/*',
+            },
         ],
     },
 }

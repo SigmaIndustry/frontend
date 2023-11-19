@@ -1,6 +1,5 @@
-import {AuthUser} from "../../../../app/home/auth/AuthSection";
 
-type SignUpDto = {
+export interface SignUpDto {
     first_name: string,
     last_name: string,
     sex: string,
@@ -11,4 +10,11 @@ type SignUpDto = {
     birth_date: string,
 }
 
-export default SignUpDto;
+export interface SignUpProviderDto extends SignUpDto{
+    "business_name": string,
+    "description": string,
+    "phone_number": string,
+    "city": string,
+    "work_time": string
+}
+

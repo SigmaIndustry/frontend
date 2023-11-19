@@ -48,7 +48,7 @@ const Page = () => {
                 <div className={styles.profile__left_block}>
                     <div className={styles.profile__avatar}>
                         {user.profile_picture
-                            ? <Image src={user.profile_picture} alt={''} width={100} height={100} style={{borderRadius: '50%'}}/>
+                            ? <img src={user.profile_picture} alt={''} width={100} height={100} style={{borderRadius: '50%'}}/>
                             : <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                                 <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>

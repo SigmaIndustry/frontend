@@ -6,28 +6,69 @@ import ServiceCard from './ServiceCard';
 import {ClassicButton} from "@shared/buttons/api";
 import {any} from "prop-types";
 import {Service} from "../../../lib/entities/Service";
+import {CategoryController} from "../../../lib/controllers/category/category.controller";
+import {ClassicSelect} from "@shared/selects/api";
 
 type SearchForm = {
     query: string;
+    category?: string;
+    min_rating: number;
 }
-
+const ratings = [
+    {
+        title: '0',
+        value: '0'
+    },
+    {
+        title: '1',
+        value: '1'
+    },
+    {
+        title: '2',
+        value: '2'
+    },
+    {
+        title: '3',
+        value: '3'
+    },
+    {
+        title: '4',
+        value: '4'
+    },
+    {
+        title: '5',
+        value: '5'
+    }
+]
 const SearchComponent = () => {
     const [form, setForm] = useState<SearchForm>({
-        query: ""
+        query: "",
+        min_rating: 0,
     })
-
-
+    const [categories, setCategories] = useState([] as any[]);
     const [services, setServices] = useState<Service[]>([]);
 
+    useEffect(() => {
+        CategoryController.getCategories().then((res: any) => {
+            console.log(res);
+
+            setCategories(Object.keys(res.data).map(item => ({
+                title: res.data[item],
+                value: item
+            })))
+        })
+    }, []);
+
+    const toSelectItems = (items: any) => {
+
+    }
     const searchFunc = async () => {
         try {
-            const res: any = await SearchController.search({
-                query: form.query
-            });
+            const res: any = await SearchController.search(form);
 
-            console.log(res.data.results)
             const results = res.data.results;
             setServices(results);
+            console.log(res.data)
         } catch (e) {
             console.log(e);
         }
@@ -35,8 +76,7 @@ const SearchComponent = () => {
 
     useEffect(() => {
         searchFunc();
-
-    }, [form.query]);
+    }, []);
     return (
         <>
             <div className={'flex mt-10 gap-4 mb-10 bg-inherit'}>
@@ -47,6 +87,22 @@ const SearchComponent = () => {
                     >
                         Title
                     </ClassicInput>
+                    <div className={'w-fit  mt-2'}>
+                        <ClassicSelect
+                            items={categories}
+                            placeholder={'Category'}
+                            setSelectedItem={(value: any) => setForm({...form, category: value as string})}
+                            label={'Category'}
+                        />
+                    </div>
+                    <div className={'w-fit  mt-2'}>
+                        <ClassicSelect
+                            items={ratings}
+                            placeholder={'Min Rating'}
+                            setSelectedItem={(value: any) => setForm({...form, min_rating: +value})}
+                            label={'Min Rating'}
+                        />
+                    </div>
                 </div>
                 <div className={'h-[55px]'}>
                     <ClassicButton onClick={searchFunc}>Search</ClassicButton>
