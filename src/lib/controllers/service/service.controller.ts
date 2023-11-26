@@ -40,4 +40,21 @@ export class ServiceController{
             }
         }
     }
+
+
+    static async getHistory(provider: string){
+        try{
+            const response = await $api.get(`api/get_history/${provider}`)
+            return response;
+        } catch (e){
+            console.log(e)
+            if (axios.isAxiosError(e)) {
+                return {
+                    error: e?.response?.data?.error ?? 'Internal server error. Try again!',
+                }
+            } else {
+                return e;
+            }
+        }
+    }
 }
