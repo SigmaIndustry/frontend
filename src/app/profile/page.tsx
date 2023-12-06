@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 import styles from './styles/profile.module.scss';
 import EditProfile from "./edit/EditProfile";
 import Image from "next/image";
+import {ClassicButton} from "@shared/buttons/api";
 
 const Page = () => {
     function formatPhoneNumber(phone: string): string {
@@ -42,6 +43,11 @@ const Page = () => {
             router.push('/login');
         }
     }, []);
+
+    const createService = () => {
+
+    }
+
     return (
         <section className={styles.profile}>
             <div className={styles.profile__inner}>

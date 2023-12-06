@@ -26,6 +26,12 @@ const SignIn = ({onHavingAccount}: SignInProps) => {
         }
         const res = await AuthController.signIn(form);
         if (res.token) {
+            const data = await AuthController.verify(res.token);
+            if (data.user.role === 'Admin') {
+                window.localStorage.setItem('token', res.token);
+                router.push('/admin');
+                return;
+            }
             window.localStorage.setItem('token', res.token);
             router.push('/');
         }

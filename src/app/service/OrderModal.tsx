@@ -43,7 +43,7 @@ const OrderModal = ({open, setOpen, service_id}: {
 
            }
         });
-    e.preventDefault();
+        e.preventDefault();
     }
 
     return (
