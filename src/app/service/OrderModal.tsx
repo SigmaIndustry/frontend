@@ -33,15 +33,15 @@ const OrderModal = ({open, setOpen, service_id}: {
         ServiceController.order({service_id , token, message: finalMessage})
         .then((res: any) => {
             console.log(res)
-           if (res.field || res.error) {
-               setOpen(false);
-               setErrorModal(true);
-           }
-           else{
-            setOpen(false)
-            setSuccessModal(true);
-
-           }
+            if (res.field || res.error) {
+                setOpen(false);
+                setErrorModal(true);
+            }
+            else{
+                setOpen(false)
+                setSuccessModal(true);
+                
+            }
         });
         e.preventDefault();
     }

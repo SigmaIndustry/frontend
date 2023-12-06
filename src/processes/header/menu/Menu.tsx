@@ -22,6 +22,10 @@ const Menu = ({username}: {username: string}) => {
         router.push(`/profile`);
     }
 
+    const toOrderHistory = async () => {
+        router.push(`/orderHistory`);
+    }
+
     return (
         <MainTheme>
             <DropdownMenu.Root modal={false}>
@@ -56,6 +60,7 @@ const Menu = ({username}: {username: string}) => {
                     </div>
                     <DropdownMenu.Separator />
                     <DropdownMenu.Item onClick={toProfile}>My profile</DropdownMenu.Item>
+                    <DropdownMenu.Item onClick={toOrderHistory}>Order history</DropdownMenu.Item>
                     <div className={styles.menu__languages}>
                         <DropdownMenu.Item>UA</DropdownMenu.Item>
                         <DropdownMenu.Item>EN</DropdownMenu.Item>
