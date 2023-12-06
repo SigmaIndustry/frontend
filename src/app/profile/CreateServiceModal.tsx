@@ -2,18 +2,21 @@ import React, {useEffect, useState} from 'react';
 import {ClassicDialog} from "@shared/dialogs/api";
 import {ClassicInput, ClassicTextArea} from "@shared/inputs/api";
 import {ClassicSelect} from "@shared/selects/api";
-import {CategoryController} from "../lib/controllers/category/category.controller";
+import {CategoryController} from "../../lib/controllers/category/category.controller";
 import {ClassicButton} from "@shared/buttons/api";
+import {ServiceController} from "../../lib/controllers/service/service.controller";
 
-const CreateServiceModal = () => {
+const CreateServiceModal = ({close, provider_id}: any) => {
     const [service, setService] = useState({
         name: '',
         price: '',
         category: '',
         description: '',
+        pictures: [''],
+        provider_id
     });
     const [categories, setCategories] = useState([] as any[]);
-
+    console.log(provider_id)
     useEffect(() => {
         CategoryController.getCategories().then((res: any) => {
             console.log(res);
@@ -25,12 +28,14 @@ const CreateServiceModal = () => {
         })
     }, []);
 
-    const apply = () => {
-
+    const apply = async (e: any) => {
+        e.preventDefault();
+        await ServiceController.create(service)
+        close();
     }
 
     const cancel = () => {
-
+        close();
     }
 
     return (
@@ -47,7 +52,13 @@ const CreateServiceModal = () => {
                     value={service.price}
                     setValue={(value) => setService({...service, price: value})}
                 >
-                    Price
+                    Price $
+                </ClassicInput>
+                <ClassicInput
+                    value={service.pictures[0]}
+                    setValue={(value) => setService({...service, pictures: [value]})}
+                >
+                    Image
                 </ClassicInput>
                 <ClassicSelect
                     label={'Category'}

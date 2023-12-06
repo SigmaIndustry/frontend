@@ -49,26 +49,30 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
 
     const [categories, setCategories] = useState({});
     useEffect(() => {
-        const fetchData = async () =>{
-        await SearchController.search({query: '', id})
-            .then((res: any) => {
-                console.log(res);
-                if (res.error) {
-                    router.push('/');
-                } else {
-                    console.log(res.data.results[0])
-                    setService(res.data.results.find(item => item.id === +id));
-                }
+        const fetchData = async () => {
+            let providerId: any;
+            await SearchController.search({query: '', id})
+                .then((res: any) => {
+                    console.log(res);
+                    if (res.error) {
+                        router.push('/');
+                    } else {
+                        console.log(res.data.results[0])
+                        const service = res.data.results.find(item => item.id === +id);
+                        providerId = service.provider;
+                        setService(service);
+                    }
+                })
+            await CategoryController.getCategories().then((res: any)=>{
+                setCategories(res.data);
             })
-        await CategoryController.getCategories().then((res: any)=>{
-            setCategories(res.data);
-        })
-        await ProviderController.getProvider({provider_id: id} as any).then((res:any)=>{
+            await ProviderController.getProvider({provider_id: providerId} as any).then((res:any)=>{
+                console.log(res);
             setProvider(res.data)})
     }
     fetchData()
     }, []);
-    console.log(service)
+
     const rate = async () => {
         setRateModal(true)
     }
@@ -76,13 +80,12 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
         setOrderModal(true)
     }
     return (
-
         <section className={styles.service}>
             <div className={styles.service__inner}>
                 <div className={styles.service__left_block}>
                     <div className={styles.service__avatar}>
                         {service.pictures
-                            ? <Image src={service.pictures[0]} alt={''} width={250} height={200}
+                            ? <img src={service.pictures[0]} alt={''} width={250} height={200}
                                      style={{height: 200, width: 250}}/>
                             : <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

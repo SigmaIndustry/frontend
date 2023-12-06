@@ -91,8 +91,29 @@ export class AuthController {
         } catch (e: any) {
             console.log(e);
             return {
-                error: e?.response?.data?.error ?? 'Internal server error. Try again!',
+                error: e?.response?.data?.error ?? e?.response?.data?._description ?? 'Internal server error. Try again!',
             }
         }
     }
+
+    static async ban({token, email}: any) {
+        try {
+            const response = await $api.post('security/ban', {
+                token,
+                email,
+                reason: 'Violation of service rules'
+            });
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            if (axios.isAxiosError(e)) {
+                return {
+                    error: e?.response?.data?.invalid_fields ?? 'Internal server error. Try again!',
+                }
+            } else {
+                return e;
+            }
+        }
+    }
+
 }

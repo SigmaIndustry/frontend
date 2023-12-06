@@ -7,6 +7,7 @@ import styles from './styles/profile.module.scss';
 import EditProfile from "./edit/EditProfile";
 import Image from "next/image";
 import {ClassicButton} from "@shared/buttons/api";
+import CreateServiceModal from "./CreateServiceModal";
 
 const Page = () => {
     function formatPhoneNumber(phone: string): string {
@@ -15,6 +16,8 @@ const Page = () => {
         return formattedNumber;
     }
 
+    const [newServiceModal, setNewServiceModal] = useState(false);
+
     const [user, setUser] = useState<User>({
         email: '',
         last_name: '',
@@ -22,6 +25,8 @@ const Page = () => {
         birth_date: '',
         sex: '',
         profile_picture: '',
+        is_admin: false,
+        is_banned: false,
     });
     const [provider, setProvider] = useState<ServiceProvider | null>(null);
 
@@ -44,9 +49,7 @@ const Page = () => {
         }
     }, []);
 
-    const createService = () => {
 
-    }
 
     return (
         <section className={styles.profile}>
@@ -75,6 +78,13 @@ const Page = () => {
                             first_name={user?.first_name}
                             last_name={user?.last_name}
                         />
+                        {provider && <div className={'mt-5'}>
+                            <ClassicButton
+                                onClick={() => setNewServiceModal(true)}
+                            >
+                                Create new Service
+                            </ClassicButton>
+                        </div>}
                     </div>
                 </div>
                 <div className={styles.profile__right_block}>
@@ -109,6 +119,7 @@ const Page = () => {
                     }
                 </div>
             </div>
+            {newServiceModal && <CreateServiceModal close={() => setNewServiceModal(false)} provider_id={provider?.id}/>}
         </section>
     );
 };

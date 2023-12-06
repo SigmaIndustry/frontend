@@ -24,4 +24,20 @@ export class SearchController{
             }
         }
     }
+
+    static async getUsers(){
+        try{
+            const response = await $api.get('security/users')
+            return response;
+        } catch (e){
+            console.log(e)
+            if (axios.isAxiosError(e)) {
+                return {
+                    error: e?.response?.data?.error ?? 'Internal server error. Try again!',
+                }
+            } else {
+                return e;
+            }
+        }
+    }
 }

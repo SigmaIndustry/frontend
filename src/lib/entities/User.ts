@@ -4,10 +4,13 @@ export interface User {
     "last_name": string,
     "birth_date": string, // yyyy-mm-dd
     "sex": string,
-    "profile_picture": string
+    "profile_picture": string,
+    is_banned: boolean,
+    is_admin: boolean,
 }
 
 export interface ServiceProvider {
+    id: number,
     "business_name": string,
     "description": string,
     "phone_number": string,

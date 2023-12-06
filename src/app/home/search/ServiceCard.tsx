@@ -11,13 +11,9 @@ const ServiceCard = ({service}: {service: Service}) => {
     return (
         <div className={styles.serviceCard} onClick={() => router.push(`/service/${service.id}`)}>
             <div className={styles.serviceCardImages}>
-                <Image src={service.pictures[0]}
+                <img src={service.pictures[0]}
                        alt={`Service Image`}
                        className={styles.serviceCardImage}
-                       width={500}
-                       height={500}
-                       quality={100}
-                       priority={true}
                 />
             </div>
             <div className={styles.serviceCardDetails}>
