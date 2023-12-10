@@ -61,10 +61,6 @@ const Menu = ({username}: {username: string}) => {
                     <DropdownMenu.Separator />
                     <DropdownMenu.Item onClick={toProfile}>My profile</DropdownMenu.Item>
                     <DropdownMenu.Item onClick={toOrderHistory}>Order history</DropdownMenu.Item>
-                    <div className={styles.menu__languages}>
-                        <DropdownMenu.Item>UA</DropdownMenu.Item>
-                        <DropdownMenu.Item>EN</DropdownMenu.Item>
-                    </div>
                     <DropdownMenu.Separator />
                     <DropdownMenu.Item shortcut="⌘" color="red" onClick={logout}>
                         Log out

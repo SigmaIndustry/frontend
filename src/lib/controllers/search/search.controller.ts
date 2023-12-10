@@ -9,7 +9,7 @@ export class SearchController{
         try{
             const response = await $api.post('api/service/search',{
                 ...searchDto,
-                page_limit: 10,
+                page_limit: 10000,
                 page_offset: 0,
             })
             return response;

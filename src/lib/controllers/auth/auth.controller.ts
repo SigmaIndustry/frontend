@@ -116,4 +116,23 @@ export class AuthController {
         }
     }
 
+    static async unban({token, email}: any) {
+        try {
+            const response = await $api.post('security/unban', {
+                token,
+                email,
+                reason: 'Violation of service rules'
+            });
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            if (axios.isAxiosError(e)) {
+                return {
+                    error: e?.response?.data?.invalid_fields ?? 'Internal server error. Try again!',
+                }
+            } else {
+                return e;
+            }
+        }
+    }
 }

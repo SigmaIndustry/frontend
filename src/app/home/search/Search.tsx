@@ -8,6 +8,7 @@ import {any} from "prop-types";
 import {Service} from "../../../lib/entities/Service";
 import {CategoryController} from "../../../lib/controllers/category/category.controller";
 import {ClassicSelect} from "@shared/selects/api";
+import {CircularProgress} from "@mui/material";
 
 type SearchForm = {
     query: string;
@@ -48,14 +49,15 @@ const SearchComponent = () => {
     const [categories, setCategories] = useState([] as any[]);
     const [services, setServices] = useState<Service[]>([]);
 
-    useEffect(() => {
-        CategoryController.getCategories().then((res: any) => {
-            console.log(res);
+    const [isLoading, setIsLoading] = useState(true);
 
-            setCategories(Object.keys(res.data).map(item => ({
-                title: res.data[item],
-                value: item
-            })))
+    useEffect(() => {
+        CategoryController.getCategories()
+            .then((res: any) => {
+                setCategories(Object.keys(res.data).map(item => ({
+                    title: res.data[item],
+                    value: item
+                })))
         })
     }, []);
 
@@ -68,7 +70,7 @@ const SearchComponent = () => {
 
             const results = res.data.results;
             setServices(results);
-            console.log(res.data)
+            setIsLoading(false);
         } catch (e) {
             console.log(e);
         }
@@ -108,14 +110,18 @@ const SearchComponent = () => {
                     <ClassicButton onClick={searchFunc}>Search</ClassicButton>
                 </div>
             </div>
-
-            {services.length > 0 ? (
-                services.map((service, index) => (
-                    <ServiceCard key={index} service={service} />
-                ))
-            ) : (
-                <p>No results.</p>
-            )}
+            {isLoading
+                ? <div className={'flex w-full justify-center'}>
+                    <CircularProgress />
+                </div>
+                : services.length > 0 ? (
+                    services.map((service, index) => (
+                        <ServiceCard key={index} service={service} />
+                    ))
+                ) : (
+                    <p>No results.</p>
+                )
+            }
         </>
     );
 };
