@@ -15,6 +15,11 @@ const CreateServiceModal = ({close, provider_id}: any) => {
         pictures: [''],
         provider_id
     });
+
+    const [geolocation, setGeolocation] = useState(({
+        longitude:'',
+        latitude:''
+    }))
     const [categories, setCategories] = useState([] as any[]);
     console.log(provider_id)
     useEffect(() => {
@@ -30,7 +35,16 @@ const CreateServiceModal = ({close, provider_id}: any) => {
 
     const apply = async (e: any) => {
         e.preventDefault();
-        await ServiceController.create(service)
+        const createdService = await ServiceController.create(service) as any
+        const token = window.localStorage.getItem('token');
+        const addGeolocation = await ServiceController.addGeolocation({
+            token: token,
+            service_id:createdService.data.id,
+            latitude:geolocation.latitude,
+            longitude:geolocation.longitude
+        })
+        console.log(createdService.data)
+        console.log(addGeolocation)
         close();
     }
 
@@ -66,6 +80,35 @@ const CreateServiceModal = ({close, provider_id}: any) => {
                     items={categories}
                     setSelectedItem={(item: any) => setService({...service, category: item})}
                 />
+                <div>
+                    <div style={ {fontWeight:'bold',marginBottom:'7px'}}>
+                        Geolocation
+                    </div>
+
+                    <div style={ {display:'flex', gap:'10px'} }>
+
+
+                        <ClassicTextArea
+                            minHeight={10}
+                            value={geolocation.latitude}
+                            setValue={(value: any) => setGeolocation({...geolocation, latitude: value})}
+                        >
+                            Latitude
+                        </ClassicTextArea>
+
+                        <ClassicTextArea
+                            minHeight={10}
+                            value={geolocation.longitude}
+                            setValue={(value: any) => setGeolocation({...geolocation, longitude: value})}
+                        >
+                            Latitude
+                        </ClassicTextArea>
+
+
+
+                    </div>
+                </div>
+
                 <ClassicTextArea
                     minHeight={200}
                     value={service.description}

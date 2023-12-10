@@ -3,6 +3,7 @@ import axios from "axios";
 import RateDto from "./dto/rate.dto";
 import OrderDto from "./dto/order.dto";
 import CreateDto from "./dto/create.dto";
+import AddGeolocationDto from "@controllers/service/dto/add-geolocation.dto";
 
 
 
@@ -63,6 +64,23 @@ export class ServiceController{
             const response = await $api.get(`api/get_history/${provider}`)
             return response;
         } catch (e){
+            console.log(e)
+            if (axios.isAxiosError(e)) {
+                return {
+                    error: e?.response?.data?.error ?? 'Internal server error. Try again!',
+                }
+            } else {
+                return e;
+            }
+        }
+    }
+
+    static async addGeolocation({token,service_id,latitude,longitude}:AddGeolocationDto){
+        try{
+            const response = await $api.post('api/add_geolocation', {token,service_id,latitude,longitude})
+            return response
+        }
+        catch(e){
             console.log(e)
             if (axios.isAxiosError(e)) {
                 return {

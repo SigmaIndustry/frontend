@@ -11,6 +11,7 @@ import RateModal from "../RateModal";
 import OrderModal from "../OrderModal";
 import { CategoryController } from 'lib/controllers/category/category.controller';
 import { ProviderController } from 'lib/controllers/provider/provider.controller';
+import OpenMaps from "../OpenMaps";
 
 type Category = {
     category : string;
@@ -43,6 +44,11 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
         created_at: ""
     });
 
+    const [geolocation, setGeolocation] = useState({
+        longitude:0,
+        latitude:0
+    }) as any
+
     const router = useRouter();
     const [rateModal, setRateModal] = useState(false);
     const [orderModal, setOrderModal] = useState(false);
@@ -51,14 +57,25 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
     useEffect(() => {
         const fetchData = async () => {
             let providerId: any;
-            await SearchController.search({query: '', id})
+            let result = await SearchController.search({query: '', id})
                 .then((res: any) => {
                     console.log(res);
                     if (res.error) {
                         router.push('/');
                     } else {
-                        console.log(res.data.results[0])
+
+                        console.log("TEST")
+                        console.log(res.data.results)
                         const service = res.data.results.find(item => item.id === +id);
+                        try{
+                            const { id, geolocation } = service;
+                            console.log("SERVIUCE")
+                            console.log(service)
+                            setGeolocation({ longitude: geolocation.longitude, latitude: geolocation.latitude });
+                        }
+                        catch(e){
+                            console.log(e)
+                        }
                         providerId = service.provider;
                         setService(service);
                     }
@@ -69,6 +86,10 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
             await ProviderController.getProvider({provider_id: providerId} as any).then((res:any)=>{
                 console.log(res);
             setProvider(res.data)})
+
+            console.log("RESULT:")
+            console.log(service);
+
     }
     fetchData()
     }, []);
@@ -114,6 +135,16 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                             <p className={styles.service__info_item}><span>Name:</span> {service.name}</p>
                             <p className={styles.service__info_item}><span>Price:</span> {service.price ?? 'Negotiable'}</p>
                             <p className={styles.service__info_item}><span>Phone number:</span> {formatPhoneNumber("+380"+ provider.phone_number)}</p>
+
+                            {geolocation.latitude !=0 ?  (
+                                <ClassicButton onClick={() => {
+                                    const url = `https://www.google.com/maps?q=${geolocation.latitude},${geolocation.longitude}`;
+                                    window.open(url, '_blank');
+                                }}>Geolocation</ClassicButton>
+                            ):(
+                                <p>No geolocation</p>
+                            )}
+
                         </div>
                         <div className={styles.service__info_block}>
                             <p className={styles.service__info_item}><span>Provider:</span> {provider.business_name}</p>
@@ -125,6 +156,7 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     <p className={styles.service__info_description}>{service.description}</p>
                 </div>
             </div>
+
             <RateModal open={rateModal} setOpen={setRateModal} serviceId={service.id}/>
             <OrderModal open={orderModal} setOpen={setOrderModal} service_id={id}/>
         </section>
