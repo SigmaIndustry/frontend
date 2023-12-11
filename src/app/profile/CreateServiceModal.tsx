@@ -21,11 +21,8 @@ const CreateServiceModal = ({close, provider_id}: any) => {
         latitude:''
     }))
     const [categories, setCategories] = useState([] as any[]);
-    console.log(provider_id)
     useEffect(() => {
         CategoryController.getCategories().then((res: any) => {
-            console.log(res);
-
             setCategories(Object.keys(res.data).map(item => ({
                 title: res.data[item],
                 value: item
@@ -43,8 +40,6 @@ const CreateServiceModal = ({close, provider_id}: any) => {
             latitude:geolocation.latitude,
             longitude:geolocation.longitude
         })
-        console.log(createdService.data)
-        console.log(addGeolocation)
         close();
     }
 
@@ -54,7 +49,7 @@ const CreateServiceModal = ({close, provider_id}: any) => {
 
     return (
         <ClassicDialog>
-            <form className={'space-y-4 bg-gray-900 p-7 rounded-2xl min-w-[500px]'}>
+            <form className={'space-y-4 bg-gray-900 p-7 rounded-2xl min-w-[500px] z-[100]'}>
                 <h1 className={'text-2xl text-center font-bold'}>Create a service</h1>
                 <ClassicInput
                     value={service.name}
@@ -101,7 +96,7 @@ const CreateServiceModal = ({close, provider_id}: any) => {
                             value={geolocation.longitude}
                             setValue={(value: any) => setGeolocation({...geolocation, longitude: value})}
                         >
-                            Latitude
+                            Longitude
                         </ClassicTextArea>
 
 
