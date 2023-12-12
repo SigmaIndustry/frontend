@@ -11,7 +11,8 @@ import RateModal from "../RateModal";
 import OrderModal from "../OrderModal";
 import { CategoryController } from 'lib/controllers/category/category.controller';
 import { ProviderController } from 'lib/controllers/provider/provider.controller';
-import OpenMaps from "../OpenMaps";
+import {AuthController} from "lib/controllers/auth/auth.controller";
+import DeleteService from "../DeleteModal";
 
 type Category = {
     category : string;
@@ -50,8 +51,14 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
     }) as any
 
     const router = useRouter();
+
+    const [token,setToken] = useState('')
     const [rateModal, setRateModal] = useState(false);
     const [orderModal, setOrderModal] = useState(false);
+    const [deleteService, setDeleteService] = useState(false);
+
+    const [pr, setPr] = useState();
+    const [ow, setOw] = useState();
 
     const [categories, setCategories] = useState({});
     useEffect(() => {
@@ -64,13 +71,9 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                         router.push('/');
                     } else {
 
-                        console.log("TEST")
-                        console.log(res.data.results)
                         const service = res.data.results.find(item => item.id === +id);
                         try{
                             const { id, geolocation } = service;
-                            console.log("SERVIUCE")
-                            console.log(service)
                             setGeolocation({ longitude: geolocation.longitude, latitude: geolocation.latitude });
                         }
                         catch(e){
@@ -83,12 +86,18 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
             await CategoryController.getCategories().then((res: any)=>{
                 setCategories(res.data);
             })
-            await ProviderController.getProvider({provider_id: providerId} as any).then((res:any)=>{
-                console.log(res);
-            setProvider(res.data)})
+            const provider = await ProviderController.getProvider({provider_id: providerId} as any).then((res:any)=>{
+                setProvider(res.data)
+                setPr(res.data)
+            })
 
-            console.log("RESULT:")
-            console.log(service);
+
+
+            const token = window.localStorage.getItem('token')
+            setToken(token);
+            const providerIsOwner = await AuthController.verify(token)
+            setOw(providerIsOwner)
+
 
     }
     fetchData()
@@ -100,6 +109,11 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
     const order = async () => {
         setOrderModal(true)
     }
+
+    const del= async () => {
+        setDeleteService(true)
+    }
+
     return (
         <section className={styles.service}>
             <div className={styles.service__inner}>
@@ -124,8 +138,13 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                         <p className={styles.service__email}>Category - {categories[service.category]}</p>
                     </div>
                     <div className={styles.service__options}>
-                    <ClassicButton onClick={order}>Order</ClassicButton>
-                    <ClassicButton onClick={rate}>Rate</ClassicButton>
+                        <ClassicButton onClick={order}>Order</ClassicButton>
+                        <ClassicButton onClick={rate}>Rate</ClassicButton>
+                        {pr?.id === ow?.service_provider?.id && pr?.id ? (
+                            <ClassicButton variant={"danger"} onClick={del}>Delete Service</ClassicButton>
+                        ) : (
+                            <div></div>
+                        )}
                     </div>
                 </div>
                 <div className={styles.service__right_block}>
@@ -156,9 +175,10 @@ const Page = ({params: {id}}: {params: {id: number}}) => {
                     <p className={styles.service__info_description}>{service.description}</p>
                 </div>
             </div>
-
-            <RateModal open={rateModal} setOpen={setRateModal} serviceId={service.id}/>
+            <DeleteService open={deleteService} setOpen={setDeleteService} service_id={service.id} />
             <OrderModal open={orderModal} setOpen={setOrderModal} service_id={id}/>
+            <RateModal open={rateModal} setOpen={setRateModal} serviceId={service.id}/>
+
         </section>
     );
 };

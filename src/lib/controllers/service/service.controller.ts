@@ -75,6 +75,22 @@ export class ServiceController{
         }
     }
 
+    static async deleteService({service_id, token}:{token:string,service_id:number}){
+        try{
+            const response = await $api.post(`api/service/delete`,{service_id, token})
+            return response;
+        } catch (e){
+            console.log(e)
+            if (axios.isAxiosError(e)) {
+                return {
+                    error: e?.response?.data?.error ?? 'Internal server error. Try again!',
+                }
+            } else {
+                return e;
+            }
+        }
+    }
+
     static async addGeolocation({token,service_id,latitude,longitude}:AddGeolocationDto){
         try{
             const response = await $api.post('api/add_geolocation', {token,service_id,latitude,longitude})
